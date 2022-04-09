@@ -133,6 +133,7 @@ Project Link: [https://github.com/IT-Hock/xarf-report-generator](https://github.
 * [IP-API.com](https://ip-api.com) (IP Lookup)
 * [AbuseIPDB.com](https://abuseipdb.com) (Auto IP Reporting)
 * [Amazon](https://aws.amazon.com) (Idea for the project - by requesting a XARF Report from us)
+* [IPBan.com](https://ipban.com) (Developer of IPBan - Great Software for banning IPs)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
