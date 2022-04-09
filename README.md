@@ -128,7 +128,11 @@ Project Link: [https://github.com/IT-Hock/xarf-report-generator](https://github.
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* [IT-Hock](https://it-hock.de)
+* [IT-Hock](https://it-hock.de) (Developer)
+* [Abusix](https://abusix.com) (Author of [XARF](https://github.com/abusix/xarf))
+* [IP-API.com](https://ip-api.com) (IP Lookup)
+* [AbuseIPDB.com](https://abuseipdb.com) (Auto IP Reporting)
+* [Amazon](https://aws.amazon.com) (Idea for the project - by requesting a XARF Report from us)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
