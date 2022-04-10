@@ -2,45 +2,26 @@ namespace ITHock.XarfReportGenerator.Plugin.XARF;
 
 public class XARFReportProcessor : IReportProcessor
 {
-    private string Organization { get; }
-
-    private string ContactPhone { get; }
-
-    private string ContactName { get; }
-
-    private string ContactEmail { get; }
-
-    private string OrganizationEmail { get; }
-
-    private string Domain { get; }
-
-    private string OutputDirectory { get; }
+    private XARFPlugin _plugin;
 
     public XARFReportProcessor(IPlugin plugin)
     {
-        // TODO: Read configuration from plugin
-        Organization = "TODO";
-        ContactPhone = "TODO";
-        ContactName = "TODO";
-        ContactEmail = "TODO";
-        OrganizationEmail = "TODO";
-        Domain = "TODO";
-
-        OutputDirectory = "xarf";
+        _plugin = (XARFPlugin)plugin;
     }
 
     public bool ProcessReport(Report report)
     {
-        var xarf = new XARF(Organization, ContactPhone, ContactName, ContactEmail, OrganizationEmail, Domain);
+        var xarf = new XARF(_plugin.Config.Organization, _plugin.Config.ContactPhone, _plugin.Config.ContactName,
+            _plugin.Config.ContactEmail, _plugin.Config.OrganizationEmail, _plugin.Config.Domain);
         var xarfReport = xarf.GetReport(report);
         if (string.IsNullOrEmpty(xarfReport))
             return false;
 
-        var filePath = Path.Combine(OutputDirectory,
+        var filePath = Path.Combine(_plugin.Config.OutputDirectory,
             $"{report.SourceIpAddress}_{report.DateTime:dd_MM_yyyy-HH_mm_ss}.json");
-        if (!Directory.Exists(OutputDirectory))
+        if (!Directory.Exists(_plugin.Config.OutputDirectory))
         {
-            Directory.CreateDirectory(OutputDirectory);
+            Directory.CreateDirectory(_plugin.Config.OutputDirectory);
         }
 
         File.WriteAllText(filePath, xarfReport);
