@@ -1,5 +1,6 @@
 using System.Reflection;
 using ITHock.XarfReportGenerator.Plugin;
+using SimpleLogger;
 
 namespace ITHock.XarfReportGenerator;
 
@@ -11,14 +12,14 @@ public class PluginSystem
 
         public IPlugin PluginInstance { get; }
         public IReportCollector? ReportCollector { get; }
-        public IIpProcessor? IpProcessor { get; }
+        public IReportProcessor? ReportProcessor { get; }
 
         public Plugin(IPlugin pluginInstance, IReportCollector? reportCollector = null,
-            IIpProcessor? ipProcessor = null)
+            IReportProcessor? reportProcessor = null)
         {
             PluginInstance = pluginInstance;
             ReportCollector = reportCollector;
-            IpProcessor = ipProcessor;
+            ReportProcessor = reportProcessor;
         }
     }
 
@@ -44,32 +45,33 @@ public class PluginSystem
 
                 var reportCollectorType =
                     assembly.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IReportCollector)));
-                var ipProcessorType = assembly.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IIpProcessor)));
-                if (!reportCollectorType.Any() && !ipProcessorType.Any())
-                    throw new NotImplementedException("Plugin does not implement IReportCollector or IIpProcessor");
+                var reportProcessorType =
+                    assembly.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IReportProcessor)));
+                if (!reportCollectorType.Any() && !reportProcessorType.Any())
+                    throw new NotImplementedException("Plugin does not implement IReportCollector or IReportProcessor");
 
                 IReportCollector? reportCollectorInstance = null;
                 if (reportCollectorType.Any())
                     reportCollectorInstance = (IReportCollector?)Activator.CreateInstance(reportCollectorType.First());
 
-                IIpProcessor? ipProcessorInstance = null;
-                if (ipProcessorType.Any())
-                    ipProcessorInstance = (IIpProcessor?)Activator.CreateInstance(ipProcessorType.First());
+                IReportProcessor? reportProcessorInstance = null;
+                if (reportProcessorType.Any())
+                    reportProcessorInstance = (IReportProcessor?)Activator.CreateInstance(reportProcessorType.First());
 
-                var plugin = new Plugin(pluginInstance, reportCollectorInstance, ipProcessorInstance);
+                var plugin = new Plugin(pluginInstance, reportCollectorInstance, reportProcessorInstance);
                 _loadedPlugins.Add(plugin);
-                Console.WriteLine($"Loaded plugin {plugin.Name}");
+                Logger.Log(Logger.Level.Info, $"Loaded plugin {plugin.Name}");
             }
             catch (NotImplementedException e)
             {
-                Console.WriteLine(e);
+                Logger.Log(Logger.Level.Warning, $"Plugin {Path.GetFileName(pluginFile)} does not implement IPlugin");
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 // ignored
-                Console.WriteLine($"Failed to load plugin {pluginFile}");
+                Logger.Log(Logger.Level.Warning, $"Failed to load plugin {pluginFile}");
 #if DEBUG
-                throw;
+                Logger.Log(e);
 #endif
             }
         }
@@ -85,13 +87,13 @@ public class PluginSystem
         return _loadedPlugins.FirstOrDefault(p => p.Name == name);
     }
 
-    public IEnumerable<IIpProcessor> GetIpProcessors()
+    public IEnumerable<Plugin> GetReportProcessors()
     {
-        return _loadedPlugins.Where(p => p.IpProcessor != null).Select(p => p.IpProcessor)!;
+        return _loadedPlugins.Where(p => p.ReportProcessor != null).Select(p => p);
     }
 
-    public IEnumerable<IReportCollector> GetReportCollectors()
+    public IEnumerable<Plugin> GetReportCollectors()
     {
-        return _loadedPlugins.Where(p => p.ReportCollector != null).Select(p => p.ReportCollector)!;
+        return _loadedPlugins.Where(p => p.ReportCollector != null).Select(p => p);
     }
 }
