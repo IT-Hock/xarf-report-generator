@@ -8,8 +8,11 @@ public class SimpleLoggerFormat : ILoggerFormatter
 {
     public string ApplyFormat(LogMessage logMessage)
     {
-        var loggerTag = $"[{logMessage.Level.ToString().ToUpper()}]";
+        var logTagName = logMessage.Level.ToString().ToUpper();
+        if(logTagName == "WARNING")
+            logTagName = "WARN";
+        var logTag = $"[{logTagName}]";
         return
-            $" {loggerTag,-7} [{logMessage.DateTime:O}]: {logMessage.Text}";
+            $" {logTag,-7} [{logMessage.DateTime:O}]: {logMessage.Text}";
     }
 }

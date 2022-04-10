@@ -53,11 +53,13 @@ public class EventViewerCollector : IReportCollector
 
                 ushort port = 0;
                 if (eventRecord.Properties.Count > 20)
+                {
                     if (!ushort.TryParse(eventRecord.Properties[20].Value.ToString(), out port))
                     {
                         //Logger.Log(Logger.Level.Debug, "Event record has no or invalid port. Skipping.");
                         continue;
                     }
+                }
 
                 var logEntry = eventRecord.Properties[8].Value.ToString() ?? "";
                 logEntry = logEntry.Replace("%%2305", "The specified user account has expired.");

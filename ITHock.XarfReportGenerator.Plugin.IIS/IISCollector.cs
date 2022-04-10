@@ -20,7 +20,9 @@ public class IISCollector : IReportCollector
 
                 var report = new Report
                 {
+                    DateTime = logEntry.dateTime,
                     SourceIpAddress = logEntry.c_ip,
+                    Username = logEntry.cs_username,
                     LogEntry = uri,
                     DestinationPort = ushort.Parse(logEntry.s_port)
                 };
