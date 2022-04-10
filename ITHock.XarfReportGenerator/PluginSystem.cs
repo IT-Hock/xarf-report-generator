@@ -48,7 +48,7 @@ public class PluginSystem
                 var reportProcessorType =
                     assembly.GetTypes().Where(t => t.GetInterfaces().Contains(typeof(IReportProcessor)));
                 if (!reportCollectorType.Any() && !reportProcessorType.Any())
-                    throw new NotImplementedException("Plugin does not implement IReportCollector or IReportProcessor");
+                    throw new NotImplementedException("does not implement IReportCollector or IReportProcessor");
 
                 IReportCollector? reportCollectorInstance = null;
                 if (reportCollectorType.Any())
@@ -56,15 +56,21 @@ public class PluginSystem
 
                 IReportProcessor? reportProcessorInstance = null;
                 if (reportProcessorType.Any())
-                    reportProcessorInstance = (IReportProcessor?)Activator.CreateInstance(reportProcessorType.First());
+                {
+                    // Allows for parametersless constructors or constructor with IPlugin parameter
+                    if(reportProcessorType.First().GetConstructor(new []{typeof(IPlugin)}) != null)
+                        reportProcessorInstance = (IReportProcessor?)Activator.CreateInstance(reportProcessorType.First(), pluginInstance);
+                    else
+                        reportProcessorInstance = (IReportProcessor?)Activator.CreateInstance(reportProcessorType.First());
+                }
 
                 var plugin = new Plugin(pluginInstance, reportCollectorInstance, reportProcessorInstance);
                 _loadedPlugins.Add(plugin);
                 Logger.Log(Logger.Level.Info, $"Loaded plugin {plugin.Name}");
             }
-            catch (NotImplementedException)
+            catch (NotImplementedException e)
             {
-                Logger.Log(Logger.Level.Warning, $"Plugin {Path.GetFileName(pluginFile)} does not implement IPlugin");
+                Logger.Log(Logger.Level.Warning, $"Plugin {Path.GetFileName(pluginFile)} {e.Message}");
             }
             catch (Exception e)
             {

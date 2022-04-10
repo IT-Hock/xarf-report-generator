@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITHock.XarfReportGenerator.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITHock.XarfReportGenerator.Plugin.nginx", "ITHock.XarfReportGenerator.Plugin.nginx\ITHock.XarfReportGenerator.Plugin.nginx.csproj", "{CF20BBC4-D168-4A89-AE1E-61E35DF20091}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITHock.XarfReportGenerator.Plugin.XARF", "ITHock.XarfReportGenerator.Plugin.XARF\ITHock.XarfReportGenerator.Plugin.XARF.csproj", "{FFB1F13D-ECA2-4299-B0CF-CA40396D035D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{CF20BBC4-D168-4A89-AE1E-61E35DF20091}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CF20BBC4-D168-4A89-AE1E-61E35DF20091}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CF20BBC4-D168-4A89-AE1E-61E35DF20091}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFB1F13D-ECA2-4299-B0CF-CA40396D035D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFB1F13D-ECA2-4299-B0CF-CA40396D035D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFB1F13D-ECA2-4299-B0CF-CA40396D035D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFB1F13D-ECA2-4299-B0CF-CA40396D035D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0F3258C9-129D-460D-8CF0-8C4B5F45288B} = {8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}
@@ -63,5 +69,6 @@ Global
 		{DE9122F3-A521-4186-B6BD-AAAC8743F55B} = {8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}
 		{1D9BFC16-CA83-4AE5-A510-80131EF2BC2B} = {8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}
 		{CF20BBC4-D168-4A89-AE1E-61E35DF20091} = {8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}
+		{FFB1F13D-ECA2-4299-B0CF-CA40396D035D} = {8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}
 	EndGlobalSection
 EndGlobal
