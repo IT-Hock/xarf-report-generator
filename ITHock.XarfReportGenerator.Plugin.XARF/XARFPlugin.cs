@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using System.Reflection;
+using Newtonsoft.Json;
 
 namespace ITHock.XarfReportGenerator.Plugin.XARF;
 
@@ -6,12 +7,14 @@ public class XARFPlugin : IPlugin
 {
     public string Name => "XARF";
     public string Author => "IT-Hock";
-    
+
     public Configuration Config { get; set; }
-    
+
     public void Initialize()
     {
-        var configContent = File.ReadAllText("Plugins/XARF/config.json");
+        var configContent =
+            File.ReadAllText(Path.Combine(Path.GetDirectoryName(Assembly.GetAssembly(typeof(XARFPlugin)).Location),
+                "config.json"));
         Config = JsonConvert.DeserializeObject<Configuration>(configContent);
     }
 
@@ -20,7 +23,7 @@ public class XARFPlugin : IPlugin
     {
         [JsonProperty("Organization")]
         public string Organization { get; set; }
-        
+
         [JsonProperty("ContactPhone")]
         public string ContactPhone { get; set; }
 
