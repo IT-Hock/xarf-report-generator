@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITHock.XarfReportGenerator.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITHock.XarfReportGenerator.Plugin.AbuseIPDB", "ITHock.XarfReportGenerator.Plugin.AbuseIPDB\ITHock.XarfReportGenerator.Plugin.AbuseIPDB.csproj", "{DE9122F3-A521-4186-B6BD-AAAC8743F55B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITHock.XarfReportGenerator.Plugin.IIS", "ITHock.XarfReportGenerator.Plugin.IIS\ITHock.XarfReportGenerator.Plugin.IIS.csproj", "{1D9BFC16-CA83-4AE5-A510-80131EF2BC2B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,10 +46,15 @@ Global
 		{DE9122F3-A521-4186-B6BD-AAAC8743F55B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE9122F3-A521-4186-B6BD-AAAC8743F55B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE9122F3-A521-4186-B6BD-AAAC8743F55B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D9BFC16-CA83-4AE5-A510-80131EF2BC2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D9BFC16-CA83-4AE5-A510-80131EF2BC2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D9BFC16-CA83-4AE5-A510-80131EF2BC2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D9BFC16-CA83-4AE5-A510-80131EF2BC2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0F3258C9-129D-460D-8CF0-8C4B5F45288B} = {8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}
 		{79292954-738E-4E56-8059-A89FB54385A0} = {8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}
 		{DE9122F3-A521-4186-B6BD-AAAC8743F55B} = {8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}
+		{1D9BFC16-CA83-4AE5-A510-80131EF2BC2B} = {8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}
 	EndGlobalSection
 EndGlobal

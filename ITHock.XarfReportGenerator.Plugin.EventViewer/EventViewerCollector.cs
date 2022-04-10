@@ -60,6 +60,12 @@ public class EventViewerCollector : IReportCollector
                     }
 
                 var logEntry = eventRecord.Properties[8].Value.ToString() ?? "";
+                logEntry = logEntry.Replace("%%2305", "The specified user account has expired.");
+                logEntry = logEntry.Replace("%%2309", "The specified account's password has expired.");
+                logEntry = logEntry.Replace("%%2310", "Account currently disabled. ");
+                logEntry = logEntry.Replace("%%2311", "Account logon time restriction violation.");
+                logEntry = logEntry.Replace("%%2312", "User not allowed to logon at this computer. ");
+                logEntry = logEntry.Replace("%%2313", "Unknown user name or bad password.");
 
                 reports.Add(new Report
                 {

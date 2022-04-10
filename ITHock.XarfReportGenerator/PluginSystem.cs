@@ -62,7 +62,7 @@ public class PluginSystem
                 _loadedPlugins.Add(plugin);
                 Logger.Log(Logger.Level.Info, $"Loaded plugin {plugin.Name}");
             }
-            catch (NotImplementedException e)
+            catch (NotImplementedException)
             {
                 Logger.Log(Logger.Level.Warning, $"Plugin {Path.GetFileName(pluginFile)} does not implement IPlugin");
             }
