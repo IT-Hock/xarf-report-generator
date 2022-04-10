@@ -49,7 +49,7 @@
 
 [![XARF Report Generator Screen Shot][product-screenshot]](https://github.com/It-Hock/xarf-report-generator)
 
-XARF Report Generator is a command line tool that generates <a href="https://github.com/abusix/xarf">XARF</a> reports from multiple sources.
+XARF Report Generator is a command line tool that generates <a href="https://github.com/abusix/xarf">XARF</a> reports from multiple sources, and can automatically report them to the abuse contact listed in the WHOIS record of the IP using the RIPE API.
 Currently it supports the following sources:
 
 - Windows EventViewer (Failed Logon Attempts)
@@ -134,6 +134,7 @@ Project Link: [https://github.com/IT-Hock/xarf-report-generator](https://github.
 * [AbuseIPDB.com](https://abuseipdb.com) (Auto IP Reporting)
 * [Amazon](https://aws.amazon.com) (Idea for the project - by requesting a XARF Report from us)
 * [IPBan.com](https://ipban.com) (Developer of IPBan - Great Software for banning IPs)
+* [RIPE](https://ripe.net/) (Provider of the WHOIS API for the IPs)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
