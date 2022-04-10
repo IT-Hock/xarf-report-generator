@@ -1,11 +1,9 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
-using Newtonsoft.Json;
-using SimpleLogger;
 
-namespace ITHock.XarfReportGenerator.Plugins;
+namespace ITHock.XarfReportGenerator.Plugin.IPBan;
 
-public static class IpBan
+public class IPBanCollector : IReportCollector
 {
     private const string IpBanProDefaultLogPath = @"C:\Program Files\IPBanProPersonal\logfile.txt";
     private const string IpBanFreeDefaultLogPath = @"C:\Program Files\IPBan\logfile.txt";
@@ -19,26 +17,18 @@ public static class IpBan
             @"Banning ip address: (?<ip>.*), user name: (?<username>.*), config blacklisted: (?<configblacklisted>.*), count: (?<count>.*), extra info: (?<extrainfo>.*), duration: (?<duration>.*)",
             RegexOptions.Compiled);
 
-    public static IEnumerable<Report> GetRecentBans(Config config)
+    public IEnumerable<Report> GatherReports()
     {
-        var ipBanLogFile = config.IpBan.IpBanLogFile;
-        if (ipBanLogFile == null || !File.Exists(ipBanLogFile))
-        {
-            if (!File.Exists(IpBanProDefaultLogPath) && !File.Exists(IpBanFreeDefaultLogPath))
-            {
-                Logger.Log("No IPBan log file found.");
-                return Enumerable.Empty<Report>();
-            }
-
-            ipBanLogFile = File.Exists(IpBanProDefaultLogPath) ? IpBanProDefaultLogPath : IpBanFreeDefaultLogPath;
-        }
+        var ipBanLogFile = File.Exists(IpBanProDefaultLogPath) ? IpBanProDefaultLogPath : IpBanFreeDefaultLogPath;
+        if (!File.Exists(ipBanLogFile))
+            return Array.Empty<Report>();
 
         var logFileLines = File.ReadAllLines(ipBanLogFile);
 
         var reports = new List<Report>();
         foreach (var logFileLine in logFileLines)
         {
-            Logger.Log(Logger.Level.Debug, $"Processing log file line: {logFileLine}");
+            //Logger.Log(Logger.Level.Debug, $"Processing log file line: {logFileLine}");
 
             var lineMatch = LineRegex.Match(
                 logFileLine);
@@ -65,25 +55,11 @@ public static class IpBan
                 SourcePort = 0, // We do not have this information!
                 LogEntry = logFileLine,
                 DestinationPort = 0, // We do not have this information!
-                DestinationIpAddress = config.MyIpAddress
+                DestinationIpAddress = "0.0.0.0" //config.MyIpAddress
             };
             reports.Add(report);
         }
 
         return reports;
-    }
-
-    public static async Task<IpAddressGeography?> LookupIp(string ip)
-    {
-        using var client = new HttpClient();
-        var geography = await client.GetAsync($"https://api.ipban.com/ip/{ip}").ContinueWith(async requestTask =>
-        {
-            var response = await requestTask;
-            var json = await response.Content.ReadAsStringAsync();
-            var result = JsonConvert.DeserializeObject<IpAddressGeography>(json);
-            return result;
-        });
-
-        return await geography;
     }
 }
