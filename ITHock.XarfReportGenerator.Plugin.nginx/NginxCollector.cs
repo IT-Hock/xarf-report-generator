@@ -5,13 +5,27 @@ namespace ITHock.XarfReportGenerator.Plugin.nginx;
 
 public class NginxCollector : IReportCollector
 {
+    private readonly NginxPlugin? _plugin;
     private readonly string _nginxDefaultLogDir = @"C:\Program Files\nginx\logs";
 
     private readonly Regex _nginxLineRegex =
-        new(@"(\d+\.\d+\.\d+\.\d+)\s.*?\s.*?\s.*?\[(.*?)\]\s\""(.*?)\""\s\d+\s\d+\s.*?\s.*?$");
+        new(
+            @"(?<ip>\d+\.\d+\.\d+\.\d+)\s.*?\s.*?\s.*?\[(?<datetime>.*?)\]\s""(?<method>.*?)\s(?<url>.*?)\s(?<http>.*?)\s(?<status>\d+)\s(?<sent>\d+)\s"".*?""\s""(?<useragent>.*?)""");
+
+    private readonly Regex _nginxDateRegex = new(@"\d{2}/[a-zA-Z]{3}/\d{4}:\d{2}:\d{2}:\d{2}");
+
+    public NginxCollector(IPlugin plugin)
+    {
+        _plugin = (NginxPlugin?)plugin;
+    }
 
     public IEnumerable<Report> GatherReports()
     {
+        if (_plugin == null || !_plugin.IsInitialized)
+            return Array.Empty<Report>();
+        if (_plugin.Config == null)
+            return Array.Empty<Report>();
+
         var reports = new List<Report>();
 
         var logFiles = Directory.GetFiles(_nginxDefaultLogDir, "*.log", SearchOption.AllDirectories);
@@ -23,12 +37,32 @@ public class NginxCollector : IReportCollector
                 var match = _nginxLineRegex.Match(line);
                 if (!match.Success) continue;
 
-                var dateRegex = new Regex(@"\d{2}/[a-zA-Z]{3}/\d{4}:\d{2}:\d{2}:\d{2}");
-                var ip = match.Groups[1].Value;
-                var dateMatch = dateRegex.Match(match.Groups[2].Value);
+                var ip = match.Groups["ip"].Value;
+                var dateMatch = _nginxDateRegex.Match(match.Groups["datetime"].Value);
                 var date = dateMatch.Groups[0].Value;
-                var url = match.Groups[3].Value;
+                var url = match.Groups["url"].Value;
+                var method = match.Groups["method"].Value;
+                var status = match.Groups["status"].Value;
+
                 var dateTime = DateTime.ParseExact(date, "dd/MMM/yyyy:HH:mm:ss", CultureInfo.InvariantCulture);
+
+                if (_plugin.Config.MethodFilter != null)
+                {
+                    var methodRegex = new Regex(_plugin.Config.MethodFilter);
+                    if (!methodRegex.IsMatch(method)) continue;
+                }
+
+                if (_plugin.Config.StatusCodeFilter != null)
+                {
+                    var statusCodeRegex = new Regex(_plugin.Config.StatusCodeFilter);
+                    if (!statusCodeRegex.IsMatch(status)) continue;
+                }
+
+                if (_plugin.Config.PathFilter != null)
+                {
+                    var pathRegex = new Regex(_plugin.Config.PathFilter);
+                    if (!pathRegex.IsMatch(url)) continue;
+                }
 
                 reports.Add(new Report
                 {

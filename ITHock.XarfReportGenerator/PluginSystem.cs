@@ -52,7 +52,13 @@ public class PluginSystem
 
                 IReportCollector? reportCollectorInstance = null;
                 if (reportCollectorType.Any())
-                    reportCollectorInstance = (IReportCollector?)Activator.CreateInstance(reportCollectorType.First());
+                {
+                    // Allows for parametersless constructors or constructor with IPlugin parameter
+                    if(reportCollectorType.First().GetConstructor(new []{typeof(IPlugin)}) != null)
+                        reportCollectorInstance = (IReportCollector?)Activator.CreateInstance(reportCollectorType.First(), pluginInstance);
+                    else
+                        reportCollectorInstance = (IReportCollector?)Activator.CreateInstance(reportCollectorType.First());
+                }
 
                 IReportProcessor? reportProcessorInstance = null;
                 if (reportProcessorType.Any())
