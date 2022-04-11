@@ -28,6 +28,11 @@ internal class Program
             if (plugin.ReportCollector == null) throw new Exception("ReportCollector is null");
 
             var foundReports = plugin.ReportCollector.GatherReports().ToList();
+            foreach (var t in foundReports)
+            {
+                t.Source = plugin.Name;
+            }
+
             reports.AddRange(foundReports);
             Logger.Log(Logger.Level.Debug, $"Found reports {plugin.Name} => {foundReports.Count}");
         }

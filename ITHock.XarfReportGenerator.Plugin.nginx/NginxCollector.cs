@@ -34,6 +34,7 @@ public class NginxCollector : IReportCollector
                 {
                     DateTime = dateTime,
                     SourceIpAddress = ip,
+                    LogEntry = line,
                 });
             }
         }

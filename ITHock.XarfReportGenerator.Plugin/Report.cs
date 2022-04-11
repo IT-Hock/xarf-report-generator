@@ -1,3 +1,5 @@
+using System.Reflection;
+
 namespace ITHock.XarfReportGenerator.Plugin
 {
     public class Report
@@ -12,6 +14,8 @@ namespace ITHock.XarfReportGenerator.Plugin
         public DateTime DateTime { get; set; }
         
         public string LogEntry { get; set; }
+
+        public string Source { get; set; }
 
         public override string ToString()
         {
