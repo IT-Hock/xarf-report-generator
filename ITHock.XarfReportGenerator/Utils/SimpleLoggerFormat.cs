@@ -13,6 +13,6 @@ public class SimpleLoggerFormat : ILoggerFormatter
             logTagName = "WARN";
         var logTag = $"[{logTagName}]";
         return
-            $" {logTag,-7} [{logMessage.DateTime:O}]: {logMessage.Text}";
+            $" {logTag,7} [{logMessage.DateTime:O}]: {logMessage.Text}";
     }
 }
