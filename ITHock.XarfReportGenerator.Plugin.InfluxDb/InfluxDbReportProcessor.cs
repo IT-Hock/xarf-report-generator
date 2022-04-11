@@ -13,13 +13,13 @@ public class InfluxDbReportProcessor : IReportProcessor
 
     public bool ProcessReport(Report report)
     {
-        if(!_plugin.IsInitialized)
+        if (!_plugin.IsInitialized)
             return false;
-        
+
         var config = _plugin.Config;
-        if(config == null)
+        if (config == null)
             return false;
-        
+
         Metrics.Collector = new CollectorConfiguration()
             .Tag.With("host", Environment.GetEnvironmentVariable("COMPUTERNAME"))
             .WriteTo.InfluxDB(config.InfluxUrl, config.InfluxDbName, config.InfluxDbUser, config.InfluxDbPassword)
@@ -29,7 +29,10 @@ public class InfluxDbReportProcessor : IReportProcessor
         {
             { "IPAddress", report.SourceIpAddress },
             { "Source", report.Source },
-            { "LogEntry", report.LogEntry }
+            { "LogEntry", report.LogEntry },
+            { "IP_Country", report.SourceIpAddressGeography?.Geography.CountryCode },
+            { "IP_ISP", report.SourceIpAddressGeography?.Geography.ISP },
+            { "IP_AbuseMail", report.SourceIpAddressGeography?.AbuseEmail },
         }, null, report.DateTime.ToUniversalTime());
         Metrics.Close();
 

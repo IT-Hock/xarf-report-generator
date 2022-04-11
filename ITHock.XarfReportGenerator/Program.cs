@@ -1,6 +1,6 @@
 ﻿using System.Net;
-using System.Reflection;
 using ITHock.XarfReportGenerator.Plugin;
+using ITHock.XarfReportGenerator.Plugin.Utils;
 using ITHock.XarfReportGenerator.Utils;
 using SimpleLogger;
 using SimpleLogger.Logging.Handlers;
@@ -9,12 +9,15 @@ namespace ITHock.XarfReportGenerator;
 
 internal class Program
 {
-    private static void Main(string[] args)
+    private static async Task Main(string[] args)
     {
         Logger.LoggerHandlerManager
             .AddHandler(new SimpleLoggerConsoleLogger())
             .AddHandler(new FileLoggerHandler(new SimpleLoggerFormat()))
             .AddHandler(new DebugConsoleLoggerHandler(new SimpleLoggerFormat()));
+
+        var cacheDatabase = new CacheDatabase();
+        cacheDatabase.Initialize();
 
         var assemblyDir = Path.GetDirectoryName(typeof(Program).Assembly.Location);
         if (assemblyDir == null)
@@ -43,6 +46,11 @@ internal class Program
         {
             // Skip the processing of reports that come from an internal ip
             if (IPAddress.Parse(report.SourceIpAddress).IsInternal()) continue;
+            
+            // TODO: Maybe make this a config option?
+            var cachedIp = await cacheDatabase.GetCachedIp(report.SourceIpAddress) ??
+                           await cacheDatabase.AddCachedIp(report.SourceIpAddress);
+            report.SourceIpAddressGeography = cachedIp;
 
             foreach (var plugin in pluginSystem.GetReportProcessors())
             {

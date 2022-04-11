@@ -21,6 +21,18 @@ public class XARFPlugin : IPlugin
     [JsonObject]
     public class Configuration
     {
+        [JsonProperty("EmailReportOutput")]
+        public string? EmailReportOutputPath { get; set; }
+        
+        [JsonProperty("EmailReportTemplate")]
+        public string? EmailReportTemplate { get; set; }
+        
+        [JsonProperty("BccMail")]
+        public string? Bcc_Mail { get; set; }
+
+        [JsonProperty("FromMail")]
+        public string From_Mail { get; set; } = "admin@local.host";
+
         [JsonProperty("Organization")]
         public string Organization { get; set; }
 

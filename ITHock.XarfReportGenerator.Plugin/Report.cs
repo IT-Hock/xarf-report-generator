@@ -1,4 +1,5 @@
 using System.Reflection;
+using ITHock.XarfReportGenerator.Plugin.Utils;
 
 namespace ITHock.XarfReportGenerator.Plugin
 {
@@ -6,6 +7,8 @@ namespace ITHock.XarfReportGenerator.Plugin
     {
         public string SourceIpAddress { get; set; } = "";
         public ushort SourcePort { get; set; }
+        
+        public IpAddressGeography? SourceIpAddressGeography { get; set; }
 
         public string DestinationIpAddress { get; set; } = "";
         public ushort DestinationPort { get; set; }
