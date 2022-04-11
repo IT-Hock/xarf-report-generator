@@ -25,7 +25,10 @@ public class InfluxDbPlugin : IPlugin
 
         var configPath = Path.Combine(assemblyDirectory, "config.json");
         if (!File.Exists(configPath))
+        {
+            File.WriteAllText(configPath, JsonConvert.SerializeObject(new Configuration(), Formatting.Indented));
             throw new Exception("Could not find config file");
+        }
 
         var configContent = File.ReadAllText(configPath);
         if (string.IsNullOrEmpty(configContent))

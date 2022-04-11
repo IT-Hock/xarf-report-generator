@@ -27,6 +27,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="SimpleLogger" Version="1.0.0" />
       <PackageReference Include="Tx.Windows" Version="3.0.6" />
     </ItemGroup>
 
