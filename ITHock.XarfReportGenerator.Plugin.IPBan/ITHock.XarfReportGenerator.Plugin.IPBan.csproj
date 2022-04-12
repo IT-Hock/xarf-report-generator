@@ -14,8 +14,7 @@
     <Target Name="CopyDLLs" AfterTargets="Build">
         <Message Text="Executing CopyDLLs task" Importance="High" />
 
-        <Copy SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb"
-              DestinationFolder="..\ITHock.XarfReportGenerator\bin\Debug\net6.0\Plugins\IPBan" />
+        <Copy SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb" DestinationFolder="..\ITHock.XarfReportGenerator\bin\Debug\net6.0\Plugins\IPBan" />
 
         <Message Text="Copied build files" Importance="High" />
     </Target>
@@ -25,6 +24,10 @@
             <Private>false</Private>
             <ExcludeAssets>runtime</ExcludeAssets>
         </ProjectReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SimpleLogger" Version="1.0.0" />
     </ItemGroup>
 
 </Project>

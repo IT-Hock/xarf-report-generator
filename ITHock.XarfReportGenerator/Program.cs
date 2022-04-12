@@ -25,6 +25,7 @@ internal class Program
         var pluginSystem = new PluginSystem(Path.GetFullPath(Path.Combine(assemblyDir, "Plugins")));
         
         var publicIp = IpAddressExtensions.GetPublicIp();
+        Logger.Log(Logger.Level.Debug, $"Got Public IP: {publicIp}");
 
         var reports = new List<Report>();
         foreach (var plugin in pluginSystem.GetReportCollectors())

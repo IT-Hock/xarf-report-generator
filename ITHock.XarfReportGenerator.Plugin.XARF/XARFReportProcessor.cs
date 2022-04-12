@@ -1,18 +1,31 @@
 using System.Net.Mail;
+using SimpleLogger;
 
 namespace ITHock.XarfReportGenerator.Plugin.XARF;
 
 public class XARFReportProcessor : IReportProcessor
 {
-    private XARFPlugin _plugin;
+    private XARFPlugin? _plugin;
 
     public XARFReportProcessor(IPlugin plugin)
     {
-        _plugin = (XARFPlugin)plugin;
+        _plugin = (XARFPlugin?)plugin;
     }
 
     public bool ProcessReport(Report report)
     {
+        if (_plugin == null || !_plugin.IsInitialized)
+        {
+            Logger.Log(Logger.Level.Error, "[XARFPlugin] Plugin not initialized");
+            return false;
+        }
+
+        if (_plugin.Config == null)
+        {
+            Logger.Log(Logger.Level.Error, "[XARFPlugin] Plugin configuration not set");
+            return false;
+        }
+
         var xarf = new XARF(_plugin.Config.Organization, _plugin.Config.ContactPhone, _plugin.Config.ContactName,
             _plugin.Config.ContactEmail, _plugin.Config.OrganizationEmail, _plugin.Config.Domain);
         var xarfReport = xarf.GetReport(report);

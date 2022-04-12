@@ -1,12 +1,12 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
+using SimpleLogger;
 
 namespace ITHock.XarfReportGenerator.Plugin.nginx;
 
 public class NginxCollector : IReportCollector
 {
     private readonly NginxPlugin? _plugin;
-    private readonly string _nginxDefaultLogDir = @"C:\Program Files\nginx\logs";
 
     private readonly Regex _nginxLineRegex =
         new(
@@ -22,16 +22,26 @@ public class NginxCollector : IReportCollector
     public IEnumerable<Report> GatherReports()
     {
         if (_plugin == null || !_plugin.IsInitialized)
+        {
+            Logger.Log(Logger.Level.Error, "[nginxPlugin] Plugin not initialized");
             return Array.Empty<Report>();
+        }
+
         if (_plugin.Config == null)
+        {
+            Logger.Log(Logger.Level.Error, "[nginxPlugin] Plugin configuration not set");
             return Array.Empty<Report>();
+        }
+        
+        if (!Directory.Exists(_plugin.Config.LogDirectory))
+        {
+            Logger.Log(Logger.Level.Warning, $"[nginxPlugin] Log directory '{_plugin.Config.LogDirectory}' does not exist");
+            return Array.Empty<Report>();
+        }
 
         var reports = new List<Report>();
 
-        if (!Directory.Exists(_nginxDefaultLogDir))
-            return Array.Empty<Report>();
-
-        var logFiles = Directory.GetFiles(_nginxDefaultLogDir, "*.log", SearchOption.AllDirectories);
+        var logFiles = Directory.GetFiles(_plugin.Config.LogDirectory, "*.log", SearchOption.AllDirectories);
         foreach (var logFile in logFiles)
         {
             var lines = File.ReadAllLines(logFile);

@@ -13,4 +13,7 @@ public class Configuration
     
     [JsonProperty("PathFilter")]
     public string? PathFilter { get; set; }
+    
+    [JsonProperty("LogDirectory")]
+    public string LogDirectory { get; set; } = "C:\\inetpub\\logs";
 }

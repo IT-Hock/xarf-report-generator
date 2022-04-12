@@ -7,7 +7,6 @@ namespace ITHock.XarfReportGenerator.Plugin.IIS;
 public class IISCollector : IReportCollector
 {
     private readonly IISPlugin? _plugin;
-    private static readonly string _defaultLogPath = @"C:\inetpub\logs";
 
     public IISCollector(IPlugin plugin)
     {
@@ -17,14 +16,25 @@ public class IISCollector : IReportCollector
     public IEnumerable<Report> GatherReports()
     {
         if (_plugin == null || !_plugin.IsInitialized)
+        {
+            Logger.Log(Logger.Level.Error, "[IISPlugin] Plugin not initialized");
             return Array.Empty<Report>();
+        }
+
         if (_plugin.Config == null)
+        {
+            Logger.Log(Logger.Level.Error, "[IISPlugin] Plugin configuration not set");
             return Array.Empty<Report>();
-        if(!Directory.Exists(_defaultLogPath))
-            return Array.Empty<Report>();   
+        }
+        
+        if (!Directory.Exists(_plugin.Config.LogDirectory))
+        {
+            Logger.Log(Logger.Level.Warning, $"[IISPlugin] Log directory '{_plugin.Config.LogDirectory}' does not exist");
+            return Array.Empty<Report>();
+        }   
         
         var reports = new List<Report>();
-        var logFiles = Directory.GetFiles(_defaultLogPath, "*.log", SearchOption.AllDirectories);
+        var logFiles = Directory.GetFiles(_plugin.Config.LogDirectory, "*.log", SearchOption.AllDirectories);
         foreach (var logFile in logFiles)
         {
             var logEntries = W3CEnumerable.FromFile(logFile);

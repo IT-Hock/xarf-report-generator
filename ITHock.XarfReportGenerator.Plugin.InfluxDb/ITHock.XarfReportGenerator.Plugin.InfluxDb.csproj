@@ -29,6 +29,7 @@
     <ItemGroup>
       <PackageReference Include="InfluxDB.Collector" Version="1.1.1" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+      <PackageReference Include="SimpleLogger" Version="1.0.0" />
     </ItemGroup>
 
 </Project>
