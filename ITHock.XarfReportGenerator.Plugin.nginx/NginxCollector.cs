@@ -28,6 +28,9 @@ public class NginxCollector : IReportCollector
 
         var reports = new List<Report>();
 
+        if (!Directory.Exists(_nginxDefaultLogDir))
+            return Array.Empty<Report>();
+
         var logFiles = Directory.GetFiles(_nginxDefaultLogDir, "*.log", SearchOption.AllDirectories);
         foreach (var logFile in logFiles)
         {

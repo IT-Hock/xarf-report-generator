@@ -35,6 +35,8 @@ public class IISCollector : IReportCollector
                 if (_plugin.Config.MethodFilter != null)
                 {
                     var methodRegex = new Regex(_plugin.Config.MethodFilter);
+                    if (logEntry.cs_method == null) continue;
+                    
                     if (!methodRegex.IsMatch(logEntry.cs_method))
                     {
                         Logger.Log(Logger.Level.Debug,$"[IISPlugin] {logEntry.cs_method} does not match {_plugin.Config.MethodFilter}");
@@ -45,6 +47,8 @@ public class IISCollector : IReportCollector
                 if (_plugin.Config.StatusCodeFilter != null)
                 {
                     var statusCodeRegex = new Regex(_plugin.Config.StatusCodeFilter);
+                    if (logEntry.sc_status == null) continue;
+                    
                     if (!statusCodeRegex.IsMatch(logEntry.sc_status))
                     {
                         Logger.Log(Logger.Level.Debug,$"[IISPlugin] {logEntry.sc_status} does not match {_plugin.Config.StatusCodeFilter}");
@@ -55,6 +59,8 @@ public class IISCollector : IReportCollector
                 if (_plugin.Config.PathFilter != null)
                 {
                     var pathRegex = new Regex(_plugin.Config.PathFilter);
+                    if (logEntry.cs_uri_stem == null) continue;
+                    
                     if (!pathRegex.IsMatch(logEntry.cs_uri_stem))
                     {
                         Logger.Log(Logger.Level.Debug,$"[IISPlugin] {logEntry.cs_uri_stem} did not match {_plugin.Config.PathFilter}");
