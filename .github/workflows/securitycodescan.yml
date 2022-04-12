@@ -15,7 +15,7 @@ on:
     # The branches below must be a subset of the branches above
     branches: [ main ]
   schedule:
-    - cron: '31 5 * * 3'
+    - cron: '0 0 1 */1 *'
 
 jobs:
   SCS:
@@ -26,7 +26,7 @@ jobs:
       - uses: microsoft/setup-msbuild@v1.0.2
       
       - name: Set up projects for analysis
-        uses: security-code-scan/security-code-scan-add-action@f8ff4f2763ed6f229eded80b1f9af82ae7f32a0d
+        uses: security-code-scan/security-code-scan-add-action@v1.2
         
       - name: Restore dependencies	
         run: dotnet restore
@@ -35,7 +35,7 @@ jobs:
         run: dotnet build --no-restore
 
       - name: Convert sarif for uploading to GitHub
-        uses: security-code-scan/security-code-scan-results-action@873fde2b46c10b7b3da204145d22377caad73420
-
-      - name: Upload sarif
-        uses: github/codeql-action/upload-sarif@v2
+        uses: security-code-scan/security-code-scan-results-action@v1.3
+        
+      - name: Upload sarif	
+        uses: github/codeql-action/upload-sarif@v1
