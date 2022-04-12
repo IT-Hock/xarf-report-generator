@@ -23,4 +23,11 @@ public static class IpAddressExtensions
             _ => false
         };
     }
+
+    public static string GetPublicIp()
+    {
+        using var client = new HttpClient();
+        var response = client.GetAsync("https://api.ipify.org").Result;
+        return response.Content.ReadAsStringAsync().Result;
+    }
 }

@@ -23,6 +23,8 @@ internal class Program
             throw new Exception("Could not get assembly directory");
 
         var pluginSystem = new PluginSystem(Path.GetFullPath(Path.Combine(assemblyDir, "Plugins")));
+        
+        var publicIp = IpAddressExtensions.GetPublicIp();
 
         var reports = new List<Report>();
         foreach (var plugin in pluginSystem.GetReportCollectors())
@@ -50,6 +52,7 @@ internal class Program
             var cachedIp = await cacheDatabase.GetCachedIp(report.SourceIpAddress) ??
                            await cacheDatabase.AddCachedIp(report.SourceIpAddress);
             report.SourceIpAddressGeography = cachedIp;
+            report.DestinationIpAddress = publicIp;
 
             foreach (var plugin in pluginSystem.GetReportProcessors())
             {
