@@ -1,16 +1,81 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITHock.XarfReportGenerator", "ITHock.XarfReportGenerator\ITHock.XarfReportGenerator.csproj", "{67AE09FF-52BF-4DFC-87EF-9E2A5682DDD0}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30114.105
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITHock.XarfReportGenerator", "ITHock.XarfReportGenerator\ITHock.XarfReportGenerator.csproj", "{0487109D-3AD8-402B-8613-BF7BEA5CB394}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITHock.XarfReportGenerator.Plugin", "ITHock.XarfReportGenerator.Plugin\ITHock.XarfReportGenerator.Plugin.csproj", "{DCFF9911-13A5-44A5-9FD4-496D8E76AD6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITHock.XarfReportGenerator.Plugin.EventViewer", "ITHock.XarfReportGenerator.Plugin.EventViewer\ITHock.XarfReportGenerator.Plugin.EventViewer.csproj", "{0F3258C9-129D-460D-8CF0-8C4B5F45288B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Plugins", "Plugins", "{8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITHock.XarfReportGenerator.Plugin.IPBan", "ITHock.XarfReportGenerator.Plugin.IPBan\ITHock.XarfReportGenerator.Plugin.IPBan.csproj", "{79292954-738E-4E56-8059-A89FB54385A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITHock.XarfReportGenerator.Plugin.AbuseIPDB", "ITHock.XarfReportGenerator.Plugin.AbuseIPDB\ITHock.XarfReportGenerator.Plugin.AbuseIPDB.csproj", "{DE9122F3-A521-4186-B6BD-AAAC8743F55B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITHock.XarfReportGenerator.Plugin.IIS", "ITHock.XarfReportGenerator.Plugin.IIS\ITHock.XarfReportGenerator.Plugin.IIS.csproj", "{1D9BFC16-CA83-4AE5-A510-80131EF2BC2B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITHock.XarfReportGenerator.Plugin.nginx", "ITHock.XarfReportGenerator.Plugin.nginx\ITHock.XarfReportGenerator.Plugin.nginx.csproj", "{CF20BBC4-D168-4A89-AE1E-61E35DF20091}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITHock.XarfReportGenerator.Plugin.XARF", "ITHock.XarfReportGenerator.Plugin.XARF\ITHock.XarfReportGenerator.Plugin.XARF.csproj", "{FFB1F13D-ECA2-4299-B0CF-CA40396D035D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITHock.XarfReportGenerator.Plugin.InfluxDb", "ITHock.XarfReportGenerator.Plugin.InfluxDb\ITHock.XarfReportGenerator.Plugin.InfluxDb.csproj", "{55C16175-EC32-459B-93BD-5A1D53051EB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{67AE09FF-52BF-4DFC-87EF-9E2A5682DDD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{67AE09FF-52BF-4DFC-87EF-9E2A5682DDD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{67AE09FF-52BF-4DFC-87EF-9E2A5682DDD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{67AE09FF-52BF-4DFC-87EF-9E2A5682DDD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0487109D-3AD8-402B-8613-BF7BEA5CB394}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0487109D-3AD8-402B-8613-BF7BEA5CB394}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0487109D-3AD8-402B-8613-BF7BEA5CB394}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0487109D-3AD8-402B-8613-BF7BEA5CB394}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCFF9911-13A5-44A5-9FD4-496D8E76AD6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCFF9911-13A5-44A5-9FD4-496D8E76AD6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCFF9911-13A5-44A5-9FD4-496D8E76AD6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCFF9911-13A5-44A5-9FD4-496D8E76AD6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F3258C9-129D-460D-8CF0-8C4B5F45288B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F3258C9-129D-460D-8CF0-8C4B5F45288B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F3258C9-129D-460D-8CF0-8C4B5F45288B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F3258C9-129D-460D-8CF0-8C4B5F45288B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79292954-738E-4E56-8059-A89FB54385A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79292954-738E-4E56-8059-A89FB54385A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79292954-738E-4E56-8059-A89FB54385A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79292954-738E-4E56-8059-A89FB54385A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE9122F3-A521-4186-B6BD-AAAC8743F55B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE9122F3-A521-4186-B6BD-AAAC8743F55B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE9122F3-A521-4186-B6BD-AAAC8743F55B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE9122F3-A521-4186-B6BD-AAAC8743F55B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D9BFC16-CA83-4AE5-A510-80131EF2BC2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D9BFC16-CA83-4AE5-A510-80131EF2BC2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D9BFC16-CA83-4AE5-A510-80131EF2BC2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D9BFC16-CA83-4AE5-A510-80131EF2BC2B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF20BBC4-D168-4A89-AE1E-61E35DF20091}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF20BBC4-D168-4A89-AE1E-61E35DF20091}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF20BBC4-D168-4A89-AE1E-61E35DF20091}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF20BBC4-D168-4A89-AE1E-61E35DF20091}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFB1F13D-ECA2-4299-B0CF-CA40396D035D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFB1F13D-ECA2-4299-B0CF-CA40396D035D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFB1F13D-ECA2-4299-B0CF-CA40396D035D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFB1F13D-ECA2-4299-B0CF-CA40396D035D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55C16175-EC32-459B-93BD-5A1D53051EB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55C16175-EC32-459B-93BD-5A1D53051EB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55C16175-EC32-459B-93BD-5A1D53051EB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55C16175-EC32-459B-93BD-5A1D53051EB9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{0F3258C9-129D-460D-8CF0-8C4B5F45288B} = {8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}
+		{79292954-738E-4E56-8059-A89FB54385A0} = {8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}
+		{DE9122F3-A521-4186-B6BD-AAAC8743F55B} = {8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}
+		{1D9BFC16-CA83-4AE5-A510-80131EF2BC2B} = {8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}
+		{CF20BBC4-D168-4A89-AE1E-61E35DF20091} = {8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}
+		{FFB1F13D-ECA2-4299-B0CF-CA40396D035D} = {8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}
+		{55C16175-EC32-459B-93BD-5A1D53051EB9} = {8B54BEF5-C0FC-47BC-9437-F0FC9EC86FBC}
 	EndGlobalSection
 EndGlobal
