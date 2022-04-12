@@ -2,6 +2,14 @@
 
 The InfluxDB Plugin processes the collected reports and sends them to an InfluxDB instance.
 
+## Example Dashboard
+
+[16097 on Grafana.com](https://grafana.com/grafana/dashboards/16097)
+
+[![dashboard-influxdb](./Images/Example_Dashboard.png)](https://grafana.com/grafana/dashboards/16097)
+
+
+
 ## Configuration
 
 ### InfluxUrl (string)
