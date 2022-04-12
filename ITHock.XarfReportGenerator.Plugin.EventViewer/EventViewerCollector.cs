@@ -1,5 +1,7 @@
 using System.Diagnostics.Eventing.Reader;
 using System.Net;
+using System.Text;
+using SimpleLogger;
 
 namespace ITHock.XarfReportGenerator.Plugin.EventViewer;
 
@@ -7,12 +9,41 @@ namespace ITHock.XarfReportGenerator.Plugin.EventViewer;
 
 public class EventViewerCollector : IReportCollector
 {
+    private readonly EventViewerPlugin _plugin;
+
+    public EventViewerCollector(IPlugin plugin)
+    {
+        _plugin = (EventViewerPlugin)plugin;
+    }
+
     public IEnumerable<Report> GatherReports()
     {
+        if (!_plugin.IsInitialized)
+            return Array.Empty<Report>();
+        
         var reports = new List<Report>();
 
-        var eventsQuery = new EventLogQuery("Security", PathType.LogName,
-            "*[System/EventID=4625 or System/EventID=5152 or System/EventID=4653]");
+        string filter;
+        if (_plugin.Config?.FilterEventId != null &&
+            _plugin.Config?.FilterEventId.Count > 0)
+        {
+            var filterStringBuilder = new StringBuilder();
+            for (var index = 0; index < _plugin.Config.FilterEventId.Count; index++)
+            {
+                var id = _plugin.Config.FilterEventId[index];
+                filterStringBuilder.Append($"System/EventID={id}");
+                if (index < _plugin.Config.FilterEventId.Count - 1)
+                    filterStringBuilder.Append(" or ");
+            }
+
+            filter = filterStringBuilder.ToString();
+        }
+        else
+        {
+            filter = "System/EventID=4625 or System/EventID=5152 or System/EventID=4653";
+        }
+
+        var eventsQuery = new EventLogQuery("Security", PathType.LogName, $"*[{filter}]");
 
         try
         {
@@ -22,20 +53,20 @@ public class EventViewerCollector : IReportCollector
             {
                 if (eventRecord.Properties.Count < 19)
                 {
-                    //Logger.Log(Logger.Level.Debug, "Event record has less than 19 properties. Skipping.");
+                    Logger.Log(Logger.Level.Debug, "Event record has less than 19 properties. Skipping.");
                     continue;
                 }
 
                 if (!eventRecord.TimeCreated.HasValue)
                 {
-                    //Logger.Log(Logger.Level.Debug, "Event record has no time created. Skipping.");
+                    Logger.Log(Logger.Level.Debug, "Event record has no time created. Skipping.");
                     continue;
                 }
 
                 var username = eventRecord.Properties[5].Value.ToString();
                 if (string.IsNullOrEmpty(username))
                 {
-                    //Logger.Log(Logger.Level.Debug, "Event record has no username. Skipping.");
+                    Logger.Log(Logger.Level.Debug, "Event record has no username. Skipping.");
                     continue;
                 }
 
@@ -47,7 +78,7 @@ public class EventViewerCollector : IReportCollector
                     if (ip is "-")
                         continue;
 
-                    //Logger.Log(Logger.Level.Debug, "Event record has no or invalid IP. Skipping.");
+                    Logger.Log(Logger.Level.Debug, "Event record has no or invalid IP. Skipping.");
                     continue;
                 }
 
@@ -56,7 +87,7 @@ public class EventViewerCollector : IReportCollector
                 {
                     if (!ushort.TryParse(eventRecord.Properties[20].Value.ToString(), out port))
                     {
-                        //Logger.Log(Logger.Level.Debug, "Event record has no or invalid port. Skipping.");
+                        Logger.Log(Logger.Level.Debug, "Event record has no or invalid port. Skipping.");
                         continue;
                     }
                 }

@@ -20,6 +20,8 @@ public class IISCollector : IReportCollector
             return Array.Empty<Report>();
         if (_plugin.Config == null)
             return Array.Empty<Report>();
+        if(!Directory.Exists(_defaultLogPath))
+            return Array.Empty<Report>();   
         
         var reports = new List<Report>();
         var logFiles = Directory.GetFiles(_defaultLogPath, "*.log", SearchOption.AllDirectories);
