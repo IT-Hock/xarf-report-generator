@@ -1,4 +1,3 @@
-using System.Reflection;
 using ITHock.XarfReportGenerator.Plugin.Utils;
 
 namespace ITHock.XarfReportGenerator.Plugin

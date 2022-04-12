@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using ITHock.XarfReportGenerator.Plugin;
-using ITHock.XarfReportGenerator.Plugin.Utils;
 using ITHock.XarfReportGenerator.Utils;
 using SimpleLogger;
 using SimpleLogger.Logging.Handlers;

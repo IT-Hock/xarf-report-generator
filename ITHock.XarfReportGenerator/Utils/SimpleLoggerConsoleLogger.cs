@@ -1,7 +1,6 @@
 using SimpleLogger;
 using SimpleLogger.Logging;
 using SimpleLogger.Logging.Formatters;
-using SimpleLogger.Logging.Handlers;
 
 namespace ITHock.XarfReportGenerator.Utils;
 

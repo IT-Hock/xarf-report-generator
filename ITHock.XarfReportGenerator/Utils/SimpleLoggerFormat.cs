@@ -1,4 +1,3 @@
-using SimpleLogger;
 using SimpleLogger.Logging;
 using SimpleLogger.Logging.Formatters;
 
