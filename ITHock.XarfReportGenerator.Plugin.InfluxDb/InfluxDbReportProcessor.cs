@@ -29,8 +29,17 @@ public class InfluxDbReportProcessor : IReportProcessor
 
         Metrics.Collector = new CollectorConfiguration()
             .Tag.With("host", Environment.GetEnvironmentVariable("COMPUTERNAME"))
+            .Tag.With("source", report.Source)
+            .Tag.With("source_isp", report.SourceIpAddressGeography?.Geography.ISP)
+            .Tag.With("source_country", report.SourceIpAddressGeography?.Geography.Country)
+            .Tag.With("source_ip", report.SourceIpAddress)
+            .Tag.With("source_port", report.SourcePort.ToString())
+            .Tag.With("destination", report.DestinationIpAddress)
+            .Tag.With("destination_port", report.DestinationPort.ToString())
             .WriteTo.InfluxDB(config.InfluxUrl, config.InfluxDbName, config.InfluxDbUser, config.InfluxDbPassword)
             .CreateCollector();
+
+        Logger.Log(Logger.Level.Debug,$"[InfluxDBPlugin] Sending report {report.DateTime.ToUniversalTime():O} '{report.SourceIpAddress}' to InfluxDB");
 
         Metrics.Collector.Write("report", new Dictionary<string, object>
         {
@@ -40,7 +49,17 @@ public class InfluxDbReportProcessor : IReportProcessor
             { "IP_Country", report.SourceIpAddressGeography?.Geography.CountryCode },
             { "IP_ISP", report.SourceIpAddressGeography?.Geography.ISP },
             { "IP_AbuseMail", report.SourceIpAddressGeography?.AbuseEmail },
-        }, null, report.DateTime.ToUniversalTime());
+        }, new Dictionary<string, string>()
+        {
+            {"host", Environment.GetEnvironmentVariable("COMPUTERNAME") },
+            {"source", report.Source },
+            {"source_ip", report.SourceIpAddress },
+            {"source_isp", report.SourceIpAddressGeography?.Geography.ISP },
+            {"source_country", report.SourceIpAddressGeography?.Geography.Country },
+            {"source_port", report.SourcePort.ToString() },
+            {"destination", report.DestinationIpAddress },
+            {"destination_port", report.DestinationPort.ToString() },
+        }, report.DateTime.ToUniversalTime());
         Metrics.Close();
 
         return true;

@@ -14,7 +14,7 @@
     <Target Name="CopyDLLs" AfterTargets="Build">
         <Message Text="Executing CopyDLLs task" Importance="High" />
         
-        <Copy SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb" DestinationFolder="..\ITHock.XarfReportGenerator\bin\Debug\net6.0\Plugins\AbuseIPDB" />
+        <Copy SourceFiles="$(TargetDir)$(ProjectName).dll;$(TargetDir)$(ProjectName).pdb" DestinationFolder="..\ITHock.XarfReportGenerator\bin\$(Configuration)\net6.0\Plugins\AbuseIPDB" />
         <Message Text="Copied build files" Importance="High" />
     </Target>
 
@@ -24,5 +24,4 @@
             <ExcludeAssets>runtime</ExcludeAssets>
         </ProjectReference>
     </ItemGroup>
-
 </Project>

@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text.RegularExpressions;
+using ITHock.XarfReportGenerator.Plugin.Utils;
 using SimpleLogger;
 
 namespace ITHock.XarfReportGenerator.Plugin.nginx;
@@ -44,7 +45,8 @@ public class NginxCollector : IReportCollector
         var logFiles = Directory.GetFiles(_plugin.Config.LogDirectory, "*.log", SearchOption.AllDirectories);
         foreach (var logFile in logFiles)
         {
-            var lines = File.ReadAllLines(logFile);
+            //var lines = File.ReadAllLines(logFile);
+            var lines = PluginUtilities.ReadAllSharedLines(logFile);
             foreach (var line in lines)
             {
                 var match = _nginxLineRegex.Match(line);
@@ -57,7 +59,7 @@ public class NginxCollector : IReportCollector
                 var method = match.Groups["method"].Value;
                 var status = match.Groups["status"].Value;
 
-                var dateTime = DateTime.ParseExact(date, "dd/MMM/yyyy:HH:mm:ss", CultureInfo.InvariantCulture);
+                var dateTime = DateTime.ParseExact(date, "dd/MMM/yyyy:HH:mm:ss", CultureInfo.CurrentCulture);
 
                 if (_plugin.Config.MethodFilter != null)
                 {

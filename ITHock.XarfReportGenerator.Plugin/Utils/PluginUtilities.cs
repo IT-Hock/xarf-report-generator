@@ -55,4 +55,22 @@ public static class PluginUtilities
         var configContent = GetConfigContent(typeof(T));
         return string.IsNullOrEmpty(configContent) ? default : JsonConvert.DeserializeObject<T>(configContent);
     }
+
+    public static string[] ReadAllSharedLines(string filePath)
+    {
+        var lines = new List<string>();
+        
+        var fileStream = File.Open(filePath, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite);
+        using var streamReader = new StreamReader(fileStream);
+        while (!streamReader.EndOfStream)
+        {
+            var line = streamReader.ReadLine();
+            if (line == null)
+                continue;
+
+            lines.Add(line);
+        }
+
+        return lines.ToArray();
+    }
 }

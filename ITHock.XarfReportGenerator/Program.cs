@@ -26,6 +26,8 @@ internal class Program
         
         var publicIp = IpAddressExtensions.GetPublicIp();
         Logger.Log(Logger.Level.Debug, $"Got Public IP: {publicIp}");
+        
+        Logger.Log(Logger.Level.Info, "Gathering reports from plugins");
 
         var reports = new List<Report>();
         foreach (var plugin in pluginSystem.GetReportCollectors())
@@ -43,6 +45,8 @@ internal class Program
         }
 
         Logger.Log(Logger.Level.Info, $"Found {reports.Count} reports");
+        
+        Logger.Log(Logger.Level.Info, "Processing reports from plugins");
 
         foreach (var report in reports)
         {

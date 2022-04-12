@@ -79,7 +79,7 @@ public class IPBanCollector : IReportCollector
                 
                 var message = lineMatch.Groups["message"].Value;
                 var datetime = DateTime.ParseExact(lineMatch.Groups["datetime"].Value, "yyyy-MM-dd HH:mm:ss.ffff",
-                    CultureInfo.InvariantCulture);
+                    CultureInfo.CurrentCulture);
 
                 var match2 = MessageRegex.Match(message);
                 if (!match2.Success)

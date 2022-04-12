@@ -17,6 +17,10 @@ public class SimpleLoggerConsoleLogger : ILoggerHandler
 
     public void Publish(LogMessage logMessage)
     {
+#if !DEBUG
+        if (logMessage.Level == Logger.Level.Debug)
+            return;
+#endif
         if (logMessage.Level == Logger.Level.Info)
             Console.ForegroundColor = ConsoleColor.Green;
         else if (logMessage.Level == Logger.Level.Error)
