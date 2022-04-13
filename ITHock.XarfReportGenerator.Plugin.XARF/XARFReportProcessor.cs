@@ -25,23 +25,32 @@ public class XARFReportProcessor : IReportProcessor
             Logger.Log(Logger.Level.Error, "[XARFPlugin] Plugin configuration not set");
             return false;
         }
+        
+        if(!_plugin.Config.EnableEmailReports && !_plugin.Config.EnableXarfReports)
+        {
+            Logger.Log(Logger.Level.Error, "[XARFPlugin] No report type enabled");
+            return false;
+        }
 
         var xarf = new XARF(_plugin.Config.Organization, _plugin.Config.ContactPhone, _plugin.Config.ContactName,
             _plugin.Config.ContactEmail, _plugin.Config.OrganizationEmail, _plugin.Config.Domain);
         var xarfReport = xarf.GetReport(report);
         if (string.IsNullOrEmpty(xarfReport))
             return false;
+
+        if(_plugin.Config.EnableXarfReports)
+            if (!GenerateXarfReport(report, xarfReport)) return false;
         
-        if (!GenerateXarfReport(report, xarfReport)) return false;
-        if (!GenerateEmailReport(report, xarfReport)) return false;
+        if(_plugin.Config.EnableEmailReports)
+            GenerateEmailReport(report, xarfReport);
         return true;
     }
 
     private bool GenerateEmailReport(Report report, string xarfReport)
     {
-        if(report.SourceIpAddressGeography?.AbuseEmail == null)
+        if (report.SourceIpAddressGeography?.AbuseEmail == null)
             return false;
-        
+
         var mailMessage = new MailMessage();
 
         mailMessage.From = new MailAddress(_plugin.Config.From_Mail);
@@ -54,9 +63,10 @@ public class XARFReportProcessor : IReportProcessor
         mailMessage.Body = GetEmailTemplate(report, xarfReport);
 
         mailMessage.IsBodyHtml = false;
+        
         // AGPLv3 - Do not remove
         mailMessage.Body += "\n\nSend using https://github.com/IT-Hock/xarf-report-generator";
-        
+
         var filePath = _plugin.Config.OutputDirectory;
         if (_plugin.Config.EmailReportOutputPath != null)
         {
@@ -68,7 +78,8 @@ public class XARFReportProcessor : IReportProcessor
             {
                 if (!string.IsNullOrEmpty(report.SourceIpAddressGeography.Geography.ISP))
                 {
-                    filePath = Path.Combine(filePath, StringExtensions.GetCleanFileName(report.SourceIpAddressGeography.Geography.ISP));
+                    filePath = Path.Combine(filePath,
+                        StringExtensions.GetCleanFileName(report.SourceIpAddressGeography.Geography.ISP));
                 }
                 else
                     filePath = Path.Combine(filePath,
@@ -79,10 +90,30 @@ public class XARFReportProcessor : IReportProcessor
         if (!Directory.Exists(filePath))
             Directory.CreateDirectory(filePath);
 
-        filePath = Path.Combine(filePath,
-            $"{report.SourceIpAddress}_{report.DateTime:yyyy-MM-dd-HH_mm_ss}.eml");
-        File.WriteAllText(filePath, mailMessage.ToEml());
-        
+        if (!_plugin.Config.CombineEmlReport)
+        {
+            filePath = Path.Combine(filePath,
+                $"{report.SourceIpAddress}_{report.DateTime:yyyy-MM-dd-HH_mm_ss}.eml");
+
+            if (File.Exists(filePath))
+                return true;
+
+            File.WriteAllText(filePath, mailMessage.ToEml());
+        }
+        else
+        {
+            filePath = Path.Combine(filePath,
+                $"{report.SourceIpAddress}.eml");
+            if (File.Exists(filePath))
+            {
+                File.AppendAllText(filePath, mailMessage.Body);
+            }
+            else
+            {
+                File.WriteAllText(filePath, mailMessage.ToEml());
+            }
+        }
+
         return true;
     }
 
@@ -112,18 +143,22 @@ public class XARFReportProcessor : IReportProcessor
             Directory.CreateDirectory(_plugin.Config.OutputDirectory);
         }
 
+        if (File.Exists(filePath))
+            return true;
+
         File.WriteAllText(filePath, xarfReport);
         return true;
     }
-    
+
     private string GetEmailTemplate(Report ipReport, string xarfReport)
     {
-        if (string.IsNullOrEmpty(_plugin.Config.EmailReportTemplate) || !File.Exists(_plugin.Config.EmailReportTemplate))
-            return ipReport + "\n\n" + xarfReport;
+        if (string.IsNullOrEmpty(_plugin.Config.EmailReportTemplate) ||
+            !File.Exists(_plugin.Config.EmailReportTemplate))
+            return xarfReport;
 
         var templateContent = File.ReadAllText(_plugin.Config.EmailReportTemplate);
         if (string.IsNullOrEmpty(templateContent))
-            return ipReport + "\n\n" + xarfReport;
+            return xarfReport;
 
         templateContent = templateContent.Replace("##XARF_REPORT##", xarfReport);
         templateContent = templateContent.Replace("##SOURCE_IP##", ipReport.SourceIpAddress);

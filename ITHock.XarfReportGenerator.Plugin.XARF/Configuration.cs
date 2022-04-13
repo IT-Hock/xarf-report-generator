@@ -5,6 +5,12 @@ namespace ITHock.XarfReportGenerator.Plugin.XARF;
 [JsonObject]
 public class Configuration
 {
+    [JsonProperty("EnableEmailReports")]
+    public bool EnableEmailReports { get; set; }
+    
+    [JsonProperty("EnableXarfReports")]
+    public bool EnableXarfReports { get; set; }
+
     [JsonProperty("EmailReportOutput")]
     public string? EmailReportOutputPath { get; set; }
         
@@ -37,4 +43,7 @@ public class Configuration
 
     [JsonProperty("OutputDirectory")]
     public string OutputDirectory { get; set; } = "xarf";
+    
+    [JsonProperty("CombineEmlReport")]
+    public bool CombineEmlReport { get; set; } = true;
 }
