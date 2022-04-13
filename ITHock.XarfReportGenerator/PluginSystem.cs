@@ -78,7 +78,11 @@ public class PluginSystem
             {
                 Logger.Log(Logger.Level.Warning, $"Plugin {Path.GetFileName(pluginFile)} {e.Message}");
             }
+#if DEBUG
             catch (Exception e)
+#else
+            catch (Exception)
+#endif
             {
                 // ignored
                 Logger.Log(Logger.Level.Warning, $"Failed to load plugin {pluginFile}");

@@ -25,10 +25,18 @@ public class XARFReportProcessor : IReportProcessor
             Logger.Log(Logger.Level.Error, "[XARFPlugin] Plugin configuration not set");
             return false;
         }
-        
-        if(!_plugin.Config.EnableEmailReports && !_plugin.Config.EnableXarfReports)
+
+        if (!_plugin.Config.EnableEmailReports && !_plugin.Config.EnableXarfReports)
         {
             Logger.Log(Logger.Level.Error, "[XARFPlugin] No report type enabled");
+            return false;
+        }
+
+        if (string.IsNullOrEmpty(_plugin.Config.Organization) || string.IsNullOrEmpty(_plugin.Config.ContactPhone) ||
+            string.IsNullOrEmpty(_plugin.Config.ContactName) || string.IsNullOrEmpty(_plugin.Config.ContactEmail) ||
+            string.IsNullOrEmpty(_plugin.Config.OrganizationEmail) || string.IsNullOrEmpty(_plugin.Config.Domain))
+        {
+            Logger.Log(Logger.Level.Error, "[XARFPlugin] Contact information not set");
             return false;
         }
 
@@ -38,11 +46,13 @@ public class XARFReportProcessor : IReportProcessor
         if (string.IsNullOrEmpty(xarfReport))
             return false;
 
-        if(_plugin.Config.EnableXarfReports)
-            if (!GenerateXarfReport(report, xarfReport)) return false;
-        
-        if(_plugin.Config.EnableEmailReports)
-            GenerateEmailReport(report, xarfReport);
+        if (_plugin.Config.EnableXarfReports)
+            if (!GenerateXarfReport(report, xarfReport))
+                return false;
+
+        if (_plugin.Config.EnableEmailReports)
+            if (!GenerateEmailReport(report, xarfReport))
+                return false;
         return true;
     }
 
@@ -51,19 +61,25 @@ public class XARFReportProcessor : IReportProcessor
         if (report.SourceIpAddressGeography?.AbuseEmail == null)
             return false;
 
+        if (_plugin?.Config?.FromMail == null)
+        {
+            Logger.Log(Logger.Level.Error, "[XARFPlugin] Please set FromMail in the plugin configuration");
+            return false;
+        }
+
         var mailMessage = new MailMessage();
 
-        mailMessage.From = new MailAddress(_plugin.Config.From_Mail);
+        mailMessage.From = new MailAddress(_plugin.Config.FromMail);
         mailMessage.To.Add(report.SourceIpAddressGeography.AbuseEmail);
 
-        if (!string.IsNullOrEmpty(_plugin.Config.Bcc_Mail))
-            mailMessage.Bcc.Add(_plugin.Config.Bcc_Mail);
+        if (!string.IsNullOrEmpty(_plugin.Config.BccMail))
+            mailMessage.Bcc.Add(_plugin.Config.BccMail);
 
         mailMessage.Subject = $"XARF Report Abuse from {report.SourceIpAddress}";
         mailMessage.Body = GetEmailTemplate(report, xarfReport);
 
         mailMessage.IsBodyHtml = false;
-        
+
         // AGPLv3 - Do not remove
         mailMessage.Body += "\n\nSend using https://github.com/IT-Hock/xarf-report-generator";
 
@@ -119,7 +135,7 @@ public class XARFReportProcessor : IReportProcessor
 
     private bool GenerateXarfReport(Report report, string xarfReport)
     {
-        var filePath = _plugin.Config.OutputDirectory;
+        var filePath = _plugin!.Config!.OutputDirectory;
         if (report.SourceIpAddressGeography != null)
         {
             if (!string.IsNullOrEmpty(report.SourceIpAddressGeography.Geography.ISP))
@@ -152,7 +168,7 @@ public class XARFReportProcessor : IReportProcessor
 
     private string GetEmailTemplate(Report ipReport, string xarfReport)
     {
-        if (string.IsNullOrEmpty(_plugin.Config.EmailReportTemplate) ||
+        if (string.IsNullOrEmpty(_plugin!.Config!.EmailReportTemplate) ||
             !File.Exists(_plugin.Config.EmailReportTemplate))
             return xarfReport;
 

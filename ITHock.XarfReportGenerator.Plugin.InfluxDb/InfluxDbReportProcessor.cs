@@ -46,16 +46,16 @@ public class InfluxDbReportProcessor : IReportProcessor
             { "IPAddress", report.SourceIpAddress },
             { "Source", report.Source },
             { "LogEntry", report.LogEntry },
-            { "IP_Country", report.SourceIpAddressGeography?.Geography.CountryCode },
-            { "IP_ISP", report.SourceIpAddressGeography?.Geography.ISP },
-            { "IP_AbuseMail", report.SourceIpAddressGeography?.AbuseEmail },
-        }, new Dictionary<string, string>()
+            { "IP_Country", report.SourceIpAddressGeography?.Geography.CountryCode! },
+            { "IP_ISP", report.SourceIpAddressGeography?.Geography.ISP! },
+            { "IP_AbuseMail", report.SourceIpAddressGeography?.AbuseEmail! },
+        }, new Dictionary<string, string>
         {
-            {"host", Environment.GetEnvironmentVariable("COMPUTERNAME") },
+            {"host", Environment.GetEnvironmentVariable("COMPUTERNAME")! },
             {"source", report.Source },
             {"source_ip", report.SourceIpAddress },
-            {"source_isp", report.SourceIpAddressGeography?.Geography.ISP },
-            {"source_country", report.SourceIpAddressGeography?.Geography.Country },
+            {"source_isp", report.SourceIpAddressGeography?.Geography.ISP! },
+            {"source_country", report.SourceIpAddressGeography?.Geography.Country! },
             {"source_port", report.SourcePort.ToString() },
             {"destination", report.DestinationIpAddress },
             {"destination_port", report.DestinationPort.ToString() },
