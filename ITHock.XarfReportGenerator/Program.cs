@@ -88,6 +88,24 @@ internal class Program
                 }
             }
 
+            if (arguments.Value.StartDate != null)
+            {
+                if(report.DateTime < arguments.Value.StartDate)
+                {
+                    Logger.Log(Logger.Level.Debug, $"Skipping report from {report.SourceIpAddress} because it is older than {arguments.Value.StartDate}");
+                    continue;
+                }
+            }
+            
+            if (arguments.Value.EndDate != null)
+            {
+                if (report.DateTime > arguments.Value.EndDate)
+                {
+                    Logger.Log(Logger.Level.Debug, $"Skipping report from {report.SourceIpAddress} because it is newer than {arguments.Value.EndDate}");
+                    continue;
+                }
+            }
+
             // TODO: Maybe make this a config option?
             var cachedIp = await cacheDatabase.GetCachedIp(report.SourceIpAddress) ??
                            await cacheDatabase.AddCachedIp(report.SourceIpAddress);
